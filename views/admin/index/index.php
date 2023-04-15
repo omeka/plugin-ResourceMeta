@@ -17,7 +17,6 @@ echo flash();
                 <td class="element-set-name">
                     <?php echo html_escape(__($elementSet->name)); ?>
                     <ul class="action-links">
-                        <!-- <li><?php echo link_to('resource-meta', 'edit', __('Edit'), null, ['id' => $elementSet->id]); ?></li> -->
                         <li><a href="<?php echo html_escape(url(['controller' => 'resource-meta', 'action' => 'edit', 'id' => $elementSet->id], 'resource-meta/id')); ?>"><?php echo __('Edit'); ?></a></li>
                     </ul>
                 </td>

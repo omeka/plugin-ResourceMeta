@@ -14,7 +14,17 @@ echo flash();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php // @todo: Add rows of element names / meta name multi-selects ?>
+                    <?php foreach ($element_set->getElements() as $element): ?>
+                    <tr>
+                        <td><?php echo __($element->name); ?></td>
+                        <td><?php echo $this->formSelect(
+                            sprintf('element_meta_names[%s][]', $element->id),
+                            null,
+                            array('style' => 'width: 100%;', 'size' => '6'),
+                            $meta_names_for_select
+                        ); ?></td>
+                    </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>

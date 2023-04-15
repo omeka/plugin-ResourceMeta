@@ -47,8 +47,33 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function hookPublicHead($args)
     {
-        // @todo: Add meta tags of this resource (item, file, collection)
-        // ex. echo '<meta name="foo" content="bar">';
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+        $module = $request->getModuleName();
+        $controller = $request->getControllerName();
+        $action = $request->getActionName();
+        if (!('default' === $module && 'show' === $action)) {
+            return;
+        }
+        switch ($controller) {
+            case 'collections':
+                $tableName = 'Collection';
+                break;
+            case 'items':
+                $tableName = 'Item';
+                break;
+            case 'files':
+                $tableName = 'File';
+                break;
+            default:
+                return;
+        }
+        $id = $request->getParam('id');
+        $db = get_db();
+        $elementTexts = $db->getTable($tableName)->find($id)->getAllElementTexts();
+        foreach ($elementTexts as $elementText) {
+            // @todo: Add meta tags of this resource (item, file, collection)
+            // ex. echo '<meta name="foo" content="bar">';
+        }
     }
 
     public function filterAdminNavigationMain($nav)
