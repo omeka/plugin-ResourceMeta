@@ -1,5 +1,5 @@
 <?php
-echo head(array('title' => __('Resource Meta'), 'bodyclass'=>'show'));
+echo head(['title' => __('Resource Meta'), 'bodyclass'=>'show']);
 echo flash();
 ?>
 <h2><?php echo __('Element Sets'); ?></h2>

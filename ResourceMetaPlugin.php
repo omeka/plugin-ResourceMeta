@@ -1,26 +1,47 @@
 <?php
 class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
 {
-    protected $_hooks = array(
+    protected $_hooks = [
         'install',
         'uninstall',
+        'after_delete_element',
         'define_acl',
         'define_routes',
         'public_head',
-    );
+    ];
 
-    protected $_filters = array(
+    protected $_filters = [
         'admin_navigation_main',
-    );
+    ];
 
     public function hookInstall()
     {
-        // @todo: Install data model
+        $db = $this->_db;
+        $sql = "
+        CREATE TABLE IF NOT EXISTS `$db->ResourceMeta_ElementMetaName` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `element_id` int(10) unsigned NOT NULL ,
+          `meta_names` text collate utf8_unicode_ci NOT NULL,
+          PRIMARY KEY  (`id`),
+          KEY `element_id` (`element_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+        $db->query($sql);
     }
 
     public function hookUninstall()
     {
-        // @todo: Uninstall data model
+        $db = get_db();
+        $sql = "DROP TABLE IF EXISTS `$db->ResourceMeta_ElementMetaName`";
+        $db->query($sql);
+    }
+
+    public function hookAfterDeleteElement()
+    {
+        // Delete meta names when an element is deleted.
+        $element = $args['record'];
+        $db = $this->_db;
+        $sql = "DELETE FROM $db->ResourceMeta_ElementMetaName WHERE element_id = ?";
+        $db->query($sql, $element->id);
     }
 
     public function hookDefineAcl($args)
@@ -36,11 +57,11 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
             'resource-meta/id',
             new Zend_Controller_Router_Route(
                 'resource-meta/:id',
-                array(
+                [
                     'module' => 'resource-meta',
                     'controller' => 'index',
                     'action' => 'edit'
-                )
+                ]
             )
         );
     }
@@ -78,11 +99,11 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function filterAdminNavigationMain($nav)
     {
-        $nav[] = array(
+        $nav[] = [
             'label' => __('Resource Meta'),
             'uri' => url('resource-meta'),
             'resource' => ('ResourceMeta_Index'),
-        );
+        ];
         return $nav;
     }
 }
