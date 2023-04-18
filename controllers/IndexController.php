@@ -21,13 +21,13 @@ class ResourceMeta_IndexController extends Omeka_Controller_AbstractActionContro
         }
 
         if ($this->getRequest()->isPost()) {
-            $elementMetaNameTable->setElementMetaNames($elementSet->id, $this->getRequest()->getPost('element_meta_names', []));
+            $elementMetaNameTable->setElementMetaNamesByElementSet($elementSet->id, $this->getRequest()->getPost('element_meta_names', []));
             $this->_helper->flashMessenger(__('The meta names were was successfully saved!'), 'success');
             $this->_helper->redirector('index');
         }
 
         $metaNames = $metaNameTable->getMetaNames();
-        $elementMetaNames = $elementMetaNameTable->getElementMetaNames($elementSet->id);
+        $elementMetaNames = $elementMetaNameTable->getElementMetaNamesByElementSet($elementSet->id);
 
         $this->view->element_set = $elementSet;
         $this->view->meta_names = $metaNames;

@@ -90,12 +90,21 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
             default:
                 return;
         }
-        $id = $request->getParam('id');
         $db = get_db();
-        $elementTexts = $db->getTable($tableName)->find($id)->getAllElementTexts();
+        $elementMetaNames =  $db->getTable('ResourceMeta_ElementMetaName')->getElementMetaNames();
+        $elementTexts = $db->getTable($tableName)->find($request->getParam('id'))->getAllElementTexts();
         foreach ($elementTexts as $elementText) {
-            // @todo: Add meta tags of this resource (item, file, collection)
-            // ex. echo '<meta name="foo" content="bar">';
+            $elementId = $elementText->element_id;
+            if (!array_key_exists($elementId, $elementMetaNames)) {
+                continue;
+            }
+            foreach ($elementMetaNames[$elementId] as $metaName) {
+                echo sprintf(
+                    '<meta name="%s" content="%s">',
+                    htmlspecialchars($metaName),
+                    htmlspecialchars($elementText->text)
+                );
+            }
         }
     }
 

@@ -1,26 +1,19 @@
 <?php
 class Table_ResourceMeta_ElementMetaName extends Omeka_Db_Table
 {
-    public function fetchElementMetaNames($elementSetId)
+    /**
+     * Get ElementMetaName data.
+     *
+     * @return array
+     */
+    public function getElementMetaNames()
     {
         $db = $this->getDb();
         $sql = "
         SELECT *
-        FROM $db->ResourceMeta_ElementMetaNames
-        WHERE element_set_id = ?";
-        return $this->fetchAll($sql, $elementSetId);
-    }
-
-    /**
-     * Get element meta names for use by the form.
-     *
-     * @param int $elementSetId
-     * @return array
-     */
-    public function getElementMetaNames($elementSetId)
-    {
+        FROM $db->ResourceMeta_ElementMetaNames";
         $elementMetaNames = [];
-        foreach ($this->fetchElementMetaNames($elementSetId) as $value) {
+        foreach ($this->fetchAll($sql) as $value) {
             $elementId = $value['element_id'];
             $metaNames = json_decode($value['meta_names'], true);
             $elementMetaNames[$elementId] = $metaNames;
@@ -29,12 +22,34 @@ class Table_ResourceMeta_ElementMetaName extends Omeka_Db_Table
     }
 
     /**
-     * Set form-generated element meta names to the database.
+     * Get ElementMetaName data by element set.
+     *
+     * @param int $elementSetId
+     * @return array
+     */
+    public function getElementMetaNamesByElementSet($elementSetId)
+    {
+        $db = $this->getDb();
+        $sql = "
+        SELECT *
+        FROM $db->ResourceMeta_ElementMetaNames
+        WHERE element_set_id = ?";
+        $elementMetaNames = [];
+        foreach ($this->fetchAll($sql, $elementSetId) as $value) {
+            $elementId = $value['element_id'];
+            $metaNames = json_decode($value['meta_names'], true);
+            $elementMetaNames[$elementId] = $metaNames;
+        }
+        return $elementMetaNames;
+    }
+
+    /**
+     * Set ElementMetaName data by element set.
      *
      * @param int $elementSetId
      * @param array $elementMetaNames
      */
-    public function setElementMetaNames($elementSetId, $elementMetaNames)
+    public function setElementMetaNamesByElementSet($elementSetId, $elementMetaNames)
     {
         if (!(is_numeric($elementSetId) && is_array($elementMetaNames))) {
             return; // Invalid format - function arguments
