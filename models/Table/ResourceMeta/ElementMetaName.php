@@ -13,12 +13,7 @@ class Table_ResourceMeta_ElementMetaName extends Omeka_Db_Table
         SELECT *
         FROM $db->ResourceMeta_ElementMetaNames";
         $elementMetaNames = [];
-        foreach ($this->fetchAll($sql) as $value) {
-            $elementId = $value['element_id'];
-            $metaNames = json_decode($value['meta_names'], true);
-            $elementMetaNames[$elementId] = $metaNames;
-        }
-        return $elementMetaNames;
+        return $this->prepareElementMetaNames($this->fetchAll($sql));
     }
 
     /**
@@ -34,8 +29,21 @@ class Table_ResourceMeta_ElementMetaName extends Omeka_Db_Table
         SELECT *
         FROM $db->ResourceMeta_ElementMetaNames
         WHERE element_set_id = ?";
+        return $this->prepareElementMetaNames($this->fetchAll($sql, $elementSetId));
+    }
+
+    /**
+     * Convert ElementMetaName fetch array to prepared array.
+     *
+     * The prepared array contains meta_names arrays keyed by element_id.
+     *
+     * @param array $fetchArray
+     * @return array
+     */
+    protected function prepareElementMetaNames($fetchArray)
+    {
         $elementMetaNames = [];
-        foreach ($this->fetchAll($sql, $elementSetId) as $value) {
+        foreach ($fetchArray as $value) {
             $elementId = $value['element_id'];
             $metaNames = json_decode($value['meta_names'], true);
             $elementMetaNames[$elementId] = $metaNames;

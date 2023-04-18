@@ -14,6 +14,9 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
         'admin_navigation_main',
     ];
 
+    /**
+     * Install ResourceMeta.
+     */
     public function hookInstall()
     {
         $db = $this->_db;
@@ -30,6 +33,9 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
         $db->query($sql);
     }
 
+    /**
+     * Uninstall ResourceMeta.
+     */
     public function hookUninstall()
     {
         $db = get_db();
@@ -37,21 +43,35 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
         $db->query($sql);
     }
 
+    /**
+     * Delete ElementMetaNames when an element is deleted.
+     *
+     * @param array $args
+     */
     public function hookAfterDeleteElement($args)
     {
-        // Delete meta names when an element is deleted.
         $element = $args['record'];
         $db = $this->_db;
         $sql = "DELETE FROM $db->ResourceMeta_ElementMetaName WHERE element_id = ?";
         $db->query($sql, $element->id);
     }
 
+    /**
+     * Add ResourceMeta ACL resource.
+     *
+     * @param array $args
+     */
     public function hookDefineAcl($args)
     {
         $acl = $args['acl'];
         $acl->addResource('ResourceMeta_Index');
     }
 
+    /**
+     * Add ResourceMeta route.
+     *
+     * @param array $args
+     */
     public function hookDefineRoutes($args)
     {
         $router = $args['router'];
@@ -68,6 +88,11 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
         );
     }
 
+    /**
+     * Add meta tags to public resource pages (items, files, collections).
+     *
+     * @param array $args
+     */
     public function hookPublicHead($args)
     {
         $request = Zend_Controller_Front::getInstance()->getRequest();
@@ -78,14 +103,14 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
             return;
         }
         switch ($controller) {
-            case 'collections':
-                $tableName = 'Collection';
-                break;
             case 'items':
                 $tableName = 'Item';
                 break;
             case 'files':
                 $tableName = 'File';
+                break;
+            case 'collections':
+                $tableName = 'Collection';
                 break;
             default:
                 return;
@@ -108,6 +133,11 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
         }
     }
 
+    /**
+     * Add ResourceMeta navigation link.
+     *
+     * @param array $nav
+     */
     public function filterAdminNavigationMain($nav)
     {
         $nav[] = [
