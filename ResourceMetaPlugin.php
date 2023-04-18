@@ -37,7 +37,7 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
         $db->query($sql);
     }
 
-    public function hookAfterDeleteElement()
+    public function hookAfterDeleteElement($args)
     {
         // Delete meta names when an element is deleted.
         $element = $args['record'];
