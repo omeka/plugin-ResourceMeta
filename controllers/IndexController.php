@@ -21,19 +21,16 @@ class ResourceMeta_IndexController extends Omeka_Controller_AbstractActionContro
         }
 
         if ($this->getRequest()->isPost()) {
-            $elementMetaNames = $this->getRequest()->getPost('element_meta_names');
-            foreach ($elementMetaNames as $key => $value) {
-                $elementMetaName = $elementMetaNameTable->findBy(['element_id' => $key]);
-                // @todo: Set new meta names (in JSON) and save
-                // @todo: Mark ID as retained
-            }
-            // @todo: Delete all element meta names of this element set that were not retained
+            $elementMetaNameTable->setElementMetaNames($elementSet->id, $this->getRequest()->getPost('element_meta_names', []));
             $this->_helper->flashMessenger(__('The meta names were was successfully saved!'), 'success');
             $this->_helper->redirector('index');
         }
 
+        $metaNames = $metaNameTable->getMetaNames();
+        $elementMetaNames = $elementMetaNameTable->getElementMetaNames($elementSet->id);
+
         $this->view->element_set = $elementSet;
-        $this->view->meta_names = $metaNameTable->getMetaNames();
-        $this->view->element_meta_names = $elementMetaNameTable->getElementMetaNames($elementSet->id);
+        $this->view->meta_names = $metaNames;
+        $this->view->element_meta_names = $elementMetaNames;
     }
 }

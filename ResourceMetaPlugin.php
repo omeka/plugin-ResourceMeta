@@ -20,9 +20,11 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
         $sql = "
         CREATE TABLE IF NOT EXISTS `$db->ResourceMeta_ElementMetaName` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `element_set_id` int(10) unsigned NOT NULL ,
           `element_id` int(10) unsigned NOT NULL ,
           `meta_names` text collate utf8_unicode_ci NOT NULL,
           PRIMARY KEY  (`id`),
+          KEY `element_set_id` (`element_set_id`),
           KEY `element_id` (`element_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
         $db->query($sql);
