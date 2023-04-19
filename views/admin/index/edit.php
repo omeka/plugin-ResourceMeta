@@ -1,8 +1,8 @@
 <?php
-echo head(['title' => __('Resource Meta'), 'bodyclass'=>'show']);
+echo head(['title' => sprintf(__('Resource Meta · %s'), $element_set->name), 'bodyclass'=>'show']);
 echo flash();
 ?>
-<h2><?php echo sprintf('%s: "%s"', __('Element Set'), __($element_set->name)); ?></h2>
+<h2><?php echo __('Element meta names'); ?></h2>
 <form method='post'>
     <section class="seven columns alpha">
         <span class="loading-span" style="color: #999;"><?php echo __('Loading table…'); ?></span>
