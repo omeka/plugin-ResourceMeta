@@ -4,48 +4,20 @@ class Table_ResourceMeta_ElementMetaName extends Omeka_Db_Table
     /**
      * Get ElementMetaName data.
      *
+     * @param ?array $params
      * @return array
      */
-    public function getElementMetaNames()
+    public function getElementMetaNames($params = null)
     {
-        $db = $this->getDb();
-        $sql = "
-        SELECT *
-        FROM $db->ResourceMeta_ElementMetaNames";
+        if (is_array($params)) {
+            $findArray = $this->findBy($params);
+        } else {
+            $findArray = $this->findAll();
+        }
         $elementMetaNames = [];
-        return $this->prepareElementMetaNames($this->fetchAll($sql));
-    }
-
-    /**
-     * Get ElementMetaName data by element set.
-     *
-     * @param int $elementSetId
-     * @return array
-     */
-    public function getElementMetaNamesByElementSet($elementSetId)
-    {
-        $db = $this->getDb();
-        $sql = "
-        SELECT *
-        FROM $db->ResourceMeta_ElementMetaNames
-        WHERE element_set_id = ?";
-        return $this->prepareElementMetaNames($this->fetchAll($sql, $elementSetId));
-    }
-
-    /**
-     * Convert ElementMetaName fetch array to prepared array.
-     *
-     * The prepared array contains meta_names arrays keyed by element_id.
-     *
-     * @param array $fetchArray
-     * @return array
-     */
-    protected function prepareElementMetaNames($fetchArray)
-    {
-        $elementMetaNames = [];
-        foreach ($fetchArray as $value) {
-            $elementId = $value['element_id'];
-            $metaNames = json_decode($value['meta_names'], true);
+        foreach ($findArray as $value) {
+            $elementId = $value->element_id;
+            $metaNames = json_decode($value->meta_names, true);
             $elementMetaNames[$elementId] = $metaNames;
         }
         return $elementMetaNames;
@@ -106,7 +78,7 @@ class Table_ResourceMeta_ElementMetaName extends Omeka_Db_Table
         // Delete rows not included in the request
         $db = $this->getDb();
         $sql = "
-        DELETE FROM $db->ResourceMeta_ElementMetaNames
+        DELETE FROM {$this->getTableName()}
         WHERE element_set_id = $elementSet->id
         AND id NOT IN (%s)";
         $this->query(sprintf($sql, implode(',', $toRetain)));

@@ -5,7 +5,8 @@ echo flash();
 <h2><?php echo sprintf('%s: "%s"', __('Element Set'), __($element_set->name)); ?></h2>
 <form method='post'>
     <section class="seven columns alpha">
-        <div class="table-responsive">
+        <span class="loading-span" style="color: #999;"><?php echo __('Loading table…'); ?></span>
+        <div class="element-meta-names-table table-responsive" style="display: none;">
             <table>
                 <thead>
                     <tr>
@@ -24,14 +25,13 @@ echo flash();
                     <tr>
                         <td><?php echo __($element->name); ?></td>
                         <td>
-                            <span class="loading" style="color: #999;"><?php echo __('Loading…'); ?></span>
                             <?php echo $this->formSelect(
                                 sprintf('element_meta_names[%s][]', $element->id),
                                 $value,
                                 [
                                     'class' => 'element-meta-names-select',
                                     'data-placeholder' => __('Select meta names'),
-                                    'style' => 'width: 100%; visibility: hidden;',
+                                    'style' => 'width: 100%;',
                                     'size' => '1',
                                 ],
                                 $meta_names
@@ -55,6 +55,7 @@ jQuery(function() {
     jQuery('.element-meta-names-select').chosen({
         width: '100%'
     });
-    jQuery('.loading').hide();
+    jQuery('.element-meta-names-table').show();
+    jQuery('.loading-span').hide();
 });
 </script>
