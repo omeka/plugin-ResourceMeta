@@ -23,12 +23,20 @@ echo flash();
                     ?>
                     <tr>
                         <td><?php echo __($element->name); ?></td>
-                        <td><?php echo $this->formSelect(
-                            sprintf('element_meta_names[%s][]', $element->id),
-                            $value,
-                            ['style' => 'width: 100%;', 'size' => '6'],
-                            $meta_names
-                        ); ?></td>
+                        <td>
+                            <span class="loading" style="color: #999;"><?php echo __('Loading…'); ?></span>
+                            <?php echo $this->formSelect(
+                                sprintf('element_meta_names[%s][]', $element->id),
+                                $value,
+                                [
+                                    'class' => 'element-meta-names-select',
+                                    'data-placeholder' => __('Select meta names'),
+                                    'style' => 'width: 100%; visibility: hidden;',
+                                    'size' => '1',
+                                ],
+                                $meta_names
+                            ); ?>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -42,3 +50,11 @@ echo flash();
     </section>
 </form>
 <?php echo foot(); ?>
+<script>
+jQuery(function() {
+    jQuery('.element-meta-names-select').chosen({
+        width: '100%'
+    });
+    jQuery('.loading').hide();
+});
+</script>

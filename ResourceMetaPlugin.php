@@ -7,6 +7,7 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
         'after_delete_element',
         'define_acl',
         'define_routes',
+        'admin_head',
         'public_head',
     ];
 
@@ -86,6 +87,24 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
                 ]
             )
         );
+    }
+
+    /**
+     * Queue assets.
+     *
+     * @param array $args
+     */
+    public function hookAdminHead($args)
+    {
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+        $module = $request->getModuleName();
+        $controller = $request->getControllerName();
+        $action = $request->getActionName();
+        if (!('resource-meta' === $module && 'index' === $controller && 'edit' === $action)) {
+            return;
+        }
+        queue_css_file('chosen.min');
+        queue_js_file('chosen.jquery.min');
     }
 
     /**
