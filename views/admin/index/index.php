@@ -9,6 +9,7 @@ echo flash();
             <tr>
                 <th><?php echo __('Name'); ?></th>
                 <th><?php echo __('Description'); ?></th>
+                <th><?php echo __('Meta names count'); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,9 @@ echo flash();
                 </td>
                 <td>
                     <?php echo html_escape(__($elementSet->description)); ?>
+                </td>
+                <td>
+                    <?php echo isset($element_meta_names[$elementSet->id]) ? array_sum(array_map('count', $element_meta_names[$elementSet->id])) : '0'; ?>
                 </td>
             </tr>
         <?php endforeach; ?>

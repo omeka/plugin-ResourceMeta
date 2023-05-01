@@ -4,8 +4,12 @@ class ResourceMeta_IndexController extends Omeka_Controller_AbstractActionContro
 
     public function indexAction()
     {
-        $elementSets = $this->_helper->db->getTable('ElementSet')->findAll();
+        $db = $this->_helper->db;
+        $elementSets = $db->getTable('ElementSet')->findAll();
+        $elementMetaNames = $db->getTable('ResourceMeta_ElementMetaName')->getElementMetaNamesByElementSet();
+
         $this->view->element_sets = $elementSets;
+        $this->view->element_meta_names = $elementMetaNames;
     }
 
     public function editAction()
@@ -28,7 +32,7 @@ class ResourceMeta_IndexController extends Omeka_Controller_AbstractActionContro
         }
 
         $metaNames = $metaNameTable->getMetaNames();
-        $elementMetaNames = $elementMetaNameTable->getElementMetaNames(['element_set_id' => $elementSet->id]);
+        $elementMetaNames = $elementMetaNameTable->getElementMetaNamesByElement(['element_set_id' => $elementSet->id]);
 
         $this->view->element_set = $elementSet;
         $this->view->meta_names = $metaNames;

@@ -2,23 +2,52 @@
 class Table_ResourceMeta_ElementMetaName extends Omeka_Db_Table
 {
     /**
-     * Get ElementMetaName data.
+     * Fetch ElementMetaName table data.
      *
      * @param ?array $params
      * @return array
      */
-    public function getElementMetaNames($params = null)
+    public function fetchElementMetaNames($params = null)
     {
         if (is_array($params)) {
-            $findArray = $this->findBy($params);
+            $elementMetaNames = $this->findBy($params);
         } else {
-            $findArray = $this->findAll();
+            $elementMetaNames = $this->findAll();
         }
+        return $elementMetaNames;
+    }
+
+    /**
+     * Get ElementMetaName data, keyed by element ID.
+     *
+     * @param ?array $params
+     * @return array
+     */
+    public function getElementMetaNamesByElement($params = null)
+    {
         $elementMetaNames = [];
-        foreach ($findArray as $value) {
+        foreach ($this->fetchElementMetaNames($params) as $value) {
             $elementId = $value->element_id;
             $metaNames = json_decode($value->meta_names, true);
             $elementMetaNames[$elementId] = $metaNames;
+        }
+        return $elementMetaNames;
+    }
+
+    /**
+     * Get ElementMetaName data, keyed by element set and element IDs.
+     *
+     * @param ?array $params
+     * @return array
+     */
+    public function getElementMetaNamesByElementSet($params = null)
+    {
+        $elementMetaNames = [];
+        foreach ($this->fetchElementMetaNames($params) as $value) {
+            $elementSetId = $value->element_set_id;
+            $elementId = $value->element_id;
+            $metaNames = json_decode($value->meta_names, true);
+            $elementMetaNames[$elementSetId][$elementId] = $metaNames;
         }
         return $elementMetaNames;
     }

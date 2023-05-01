@@ -135,7 +135,7 @@ class ResourceMetaPlugin extends Omeka_Plugin_AbstractPlugin
                 return;
         }
         $db = get_db();
-        $elementMetaNames =  $db->getTable('ResourceMeta_ElementMetaName')->getElementMetaNames();
+        $elementMetaNames =  $db->getTable('ResourceMeta_ElementMetaName')->getElementMetaNamesByElement();
         $elementTexts = $db->getTable($tableName)->find($request->getParam('id'))->getAllElementTexts();
         foreach ($elementTexts as $elementText) {
             $elementId = $elementText->element_id;
