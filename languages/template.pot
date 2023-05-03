@@ -1,0 +1,56 @@
+# Translation for the Resource Meta plugin for Omeka.
+# Copyright (C) 2013 Roy Rosenzweig Center for History and New Media
+# This file is distributed under the same license as the Omeka package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Resource Meta\n"
+"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-ResourceMeta/issues\n"
+"POT-Creation-Date: 2013-01-23 21:49-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ResourceMetaPlugin.php:163 views/admin/index/index.php:2
+msgid "Resource Meta"
+msgstr ""
+
+#: controllers/IndexController.php:30
+#, php-format
+msgid "The \"%s\" meta names were was successfully saved!"
+msgstr ""
+
+#: views/admin/index/edit.php:2
+#, php-format
+msgid "Resource Meta · %s"
+msgstr ""
+
+#: views/admin/index/edit.php:5
+msgid "Element meta names"
+msgstr ""
+
+#: views/admin/index/edit.php:8
+msgid "Loading table…"
+msgstr ""
+
+#: views/admin/index/edit.php:13
+msgid "Element"
+msgstr ""
+
+#: views/admin/index/edit.php:14
+msgid "Meta Names"
+msgstr ""
+
+#: views/admin/index/edit.php:33
+msgid "Select meta names"
+msgstr ""
+
+#: views/admin/index/index.php:12
+msgid "Meta names count"
+msgstr ""
